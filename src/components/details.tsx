@@ -1,19 +1,18 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import github from "../../public/brands/github.svg";
-import telegram from "../../public/brands/telegram.svg";
-import x from "../../public/brands/x.svg";
-import linkedin from "../../public/brands/linkedinLigth.svg";
-import cv from "../../public/brands/cv.svg";
-
+import github from "../../public/brands/github.png";
+import telegram from "../../public/brands/telegram.png";
+import linkedin from "../../public/brands/linkedin.png";
+import stackoverflow from "../../public/brands/stackoverflow.png";
+import cv from "../../public/brands/pdf.png";
 const Details: React.FC = () => {
   return (
-    <div className="flex items-center mt-4">
+    <div className="flex items-center mt-4 gap-1">
       <Link
-        href="https://t.me/mirzohid22me"
+        href="https://drive.google.com/file/d/1GuhvYUwReGxITLgG6sNyEHltFPZtGVXr/view?usp=sharing"
         target="_blank"
-        className="text-white hover:scale-110 transform transition-all duration-500"
+        className=" text-white hover:scale-110 transform transition-all duration-500"
       >
         <Image src={cv} width={50} height={50} alt="CV" />
       </Link>
@@ -39,11 +38,11 @@ const Details: React.FC = () => {
         <Image src={linkedin} width={50} height={50} alt="Linkedin" />
       </Link>
       <Link
-        href="https://twitter.com/SalimovMir15987"
+        href="https://stackoverflow.com/users/17851958/mirzohid-salimov"
         target="_blank"
         className="text-white hover:scale-110 transform transition-all duration-500"
       >
-        <Image src={x} width={50} height={50} alt="X" />
+        <Image src={stackoverflow} width={50} height={50} alt="X" />
       </Link>
     </div>
   );

@@ -3,10 +3,13 @@ import Link from "next/link";
 
 const Header: React.FC = () => {
   return (
-    <header className="bg-gray-800 h-16">
+    <header className="bg-gray-800 min-h-16 h-1/9">
       <nav className="container mx-auto flex items-center justify-between p-4">
         <div className="flex items-center">
-          <Link href="/" className="text-white text-xl font-bold">
+          <Link
+            href="/"
+            className="text-gray-300 hover:text-white font-bold text-xl"
+          >
             Mirzohid
           </Link>
         </div>
@@ -16,14 +19,14 @@ const Header: React.FC = () => {
             target="_blank"
             className="text-gray-300 hover:text-white"
           >
-            Contact
+            Projects
           </Link>
           <Link
             href="https://github.com/Mirzohid22"
             target="_blank"
             className="text-gray-300 hover:text-white"
           >
-            Github
+            Experience
           </Link>
         </div>
       </nav>

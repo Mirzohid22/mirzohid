@@ -65,9 +65,9 @@ const Header: React.FC = () => {
         </button>
       </nav>
 
-      {/* Mobile dropdown */}
+      {/* Mobile dropdown — absolute so it overlays content instead of pushing it down */}
       {open && (
-        <div className="md:hidden border-t border-slate-100 bg-white/95 backdrop-blur-sm px-4 pb-3">
+        <div className="md:hidden absolute top-full left-0 right-0 border-t border-slate-100 bg-white/95 backdrop-blur-sm shadow-lg px-4 pb-3">
           {navLinks.map((link) => (
             <Link
               key={link.href}

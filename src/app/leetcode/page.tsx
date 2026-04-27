@@ -208,7 +208,7 @@ export default async function LeetCodePage() {
   return (
     <main className="min-h-screen">
       <Header />
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-10 md:py-16">
         <div className="max-w-3xl mx-auto">
 
           {!user ? (

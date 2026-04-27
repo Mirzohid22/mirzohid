@@ -12,7 +12,7 @@ export default function Experience() {
   return (
     <main className="min-h-screen">
       <Header />
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-10 md:py-16">
         <div className="max-w-2xl mx-auto">
           <h1 className="text-3xl font-bold text-slate-900 mb-1">Experience</h1>
           <p className="text-slate-500 mb-12">My professional journey.</p>

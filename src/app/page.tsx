@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       <Header />
-      <section className="container mx-auto px-4 pt-24 pb-20 flex flex-col items-center text-center">
+      <section className="container mx-auto px-4 pt-12 pb-16 sm:pt-24 sm:pb-20 flex flex-col items-center text-center">
         <div className="relative mb-6">
           <Image
             src={mirzohid}

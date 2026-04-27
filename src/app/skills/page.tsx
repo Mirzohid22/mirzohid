@@ -19,7 +19,7 @@ export default function Skills() {
   return (
     <main className="min-h-screen">
       <Header />
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-10 md:py-16">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl font-bold text-slate-900 mb-1">Skills</h1>
           <p className="text-slate-500 mb-10">Technologies and tools I work with.</p>

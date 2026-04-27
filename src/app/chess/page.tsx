@@ -98,7 +98,7 @@ export default async function ChessPage() {
   return (
     <main className="min-h-screen">
       <Header />
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-10 md:py-16">
         <div className="max-w-3xl mx-auto">
 
           {!profile ? (
@@ -115,24 +115,24 @@ export default async function ChessPage() {
 
               {/* ── Profile card ── */}
               <div className="bg-white border border-slate-200 rounded-xl p-6">
-                <div className="flex items-start gap-5 flex-wrap">
+                <div className="flex items-start gap-4">
                   {profile.avatar ? (
                     <Image
                       src={profile.avatar}
-                      width={72}
-                      height={72}
+                      width={64}
+                      height={64}
                       alt={profile.username}
                       className="rounded-full ring-2 ring-slate-100 shrink-0"
                     />
                   ) : (
-                    <div className="w-[72px] h-[72px] rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
-                      <span style={{ fontSize: 32 }}>♞</span>
+                    <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center shrink-0 text-3xl">
+                      ♞
                     </div>
                   )}
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap mb-0.5">
-                      <h1 className="text-xl font-bold text-slate-900">
+                      <h1 className="text-lg font-bold text-slate-900">
                         {profile.name || profile.username}
                       </h1>
                       {profile.title && (
@@ -143,7 +143,7 @@ export default async function ChessPage() {
                     </div>
                     <p className="text-sm text-slate-400 mb-3">@{profile.username}</p>
 
-                    <div className="flex flex-wrap gap-x-5 gap-y-1 text-sm text-slate-500">
+                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-slate-500 mb-4">
                       {countryCode(profile.country) && (
                         <span>{countryCode(profile.country)}</span>
                       )}
@@ -151,16 +151,16 @@ export default async function ChessPage() {
                       <span>Joined {formatDate(profile.joined)}</span>
                       <span>Last seen {formatDate(profile.last_online)}</span>
                     </div>
-                  </div>
 
-                  <Link
-                    href={PROFILE_URL}
-                    target="_blank"
-                    className="px-4 py-2 rounded-lg text-sm font-semibold text-white shrink-0 transition-opacity hover:opacity-90"
-                    style={{ backgroundColor: "#7fa650" }}
-                  >
-                    View Profile →
-                  </Link>
+                    <Link
+                      href={PROFILE_URL}
+                      target="_blank"
+                      className="inline-block px-4 py-1.5 rounded-lg text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                      style={{ backgroundColor: "#7fa650" }}
+                    >
+                      View Profile →
+                    </Link>
+                  </div>
                 </div>
               </div>
 

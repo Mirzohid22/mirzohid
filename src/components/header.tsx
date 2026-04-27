@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -17,15 +17,12 @@ const navLinks = [
 const Header: React.FC = () => {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
+  const close = () => setOpen(false);
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm border-b border-slate-200">
       <nav className="container mx-auto flex items-center justify-between px-4 h-16">
-        <Link href="/" className="font-bold text-xl text-slate-900 tracking-tight">
+        <Link href="/" onClick={close} className="font-bold text-xl text-slate-900 tracking-tight">
           MS<span className="text-indigo-500">.</span>
         </Link>
 
@@ -46,10 +43,12 @@ const Header: React.FC = () => {
           ))}
         </div>
 
-        {/* Hamburger button — mobile only */}
+        {/* Hamburger — mobile only */}
         <button
-          onClick={() => setOpen((v) => !v)}
+          type="button"
           aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
           className="md:hidden p-2 rounded-md text-slate-600 hover:bg-slate-100 transition-colors"
         >
           {open ? (
@@ -73,6 +72,7 @@ const Header: React.FC = () => {
             <Link
               key={link.href}
               href={link.href}
+              onClick={close}
               className={`block px-3 py-3 rounded-md text-sm font-medium transition-colors ${
                 pathname === link.href
                   ? "text-indigo-600 bg-indigo-50"

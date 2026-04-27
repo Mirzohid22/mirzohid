@@ -6,6 +6,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "assets.leetcode.com",
       },
+      {
+        protocol: "https",
+        hostname: "images.chess.com",
+      },
     ],
   },
 };

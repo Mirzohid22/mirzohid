@@ -4,7 +4,7 @@ import Header from "@/components/header";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Mirzohid Salimov via email, Telegram, GitHub, LinkedIn, or LeetCode.",
+    "Get in touch with Mirzohid Salimov via email, Telegram, GitHub, LinkedIn, LeetCode, or Chess.com.",
 };
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
@@ -12,6 +12,15 @@ import github from "../../../public/brands/github.png";
 import telegram from "../../../public/brands/telegram.png";
 import linkedin from "../../../public/brands/linkedin.png";
 import stackoverflow from "../../../public/brands/stackoverflow.png";
+
+function ChessIcon() {
+  return (
+    <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+      <rect width="32" height="32" rx="7" fill="#7fa650"/>
+      <text x="16" y="24" fontFamily="Georgia, serif" fontSize="20" textAnchor="middle" fill="white">♞</text>
+    </svg>
+  );
+}
 
 function LeetCodeIcon() {
   return (
@@ -32,6 +41,7 @@ type Contact = {
   | { kind: "email" }
   | { kind: "image"; icon: StaticImageData }
   | { kind: "leetcode" }
+  | { kind: "chess" }
 );
 
 const contacts: Contact[] = [
@@ -40,6 +50,7 @@ const contacts: Contact[] = [
   { kind: "image", label: "GitHub", value: "github.com/Mirzohid22", href: "https://github.com/Mirzohid22", icon: github },
   { kind: "image", label: "LinkedIn", value: "linkedin.com/in/mirzohid-salimov", href: "https://www.linkedin.com/in/mirzohid-salimov/", icon: linkedin },
   { kind: "leetcode", label: "LeetCode", value: "leetcode.com/u/MirzohidSalimov", href: "https://leetcode.com/u/MirzohidSalimov/" },
+  { kind: "chess", label: "Chess.com", value: "chess.com/member/device_22", href: "https://www.chess.com/member/device_22" },
   { kind: "image", label: "Stack Overflow", value: "mirzohid-salimov", href: "https://stackoverflow.com/users/17851958/mirzohid-salimov", icon: stackoverflow },
 ];
 
@@ -61,7 +72,9 @@ export default function Contact() {
                 target="_blank"
                 className="bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-4 hover:border-indigo-300 hover:shadow-md transition-all duration-200 group"
               >
-                {c.kind === "leetcode" ? (
+                {c.kind === "chess" ? (
+                  <div className="shrink-0"><ChessIcon /></div>
+                ) : c.kind === "leetcode" ? (
                   <div className="shrink-0"><LeetCodeIcon /></div>
                 ) : c.kind === "image" ? (
                   <Image src={c.icon} width={32} height={32} alt={c.label} className="rounded shrink-0" />

@@ -48,6 +48,17 @@ const Details: React.FC = () => {
           />
         </svg>
       </Link>
+      <Link
+        href="https://www.chess.com/member/device_22"
+        target="_blank"
+        aria-label="Chess.com"
+        className="opacity-50 hover:opacity-100 transition-opacity duration-200"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <rect width="24" height="24" rx="6" fill="#7fa650"/>
+          <text x="12" y="18" fontFamily="Georgia, serif" fontSize="14" textAnchor="middle" fill="white">♞</text>
+        </svg>
+      </Link>
     </div>
   );
 };

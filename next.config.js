@@ -10,6 +10,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "images.chess.com",
       },
+      {
+        protocol: "https",
+        hostname: "images.chesscomfiles.com",
+      },
     ],
   },
 };

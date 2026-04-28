@@ -50,7 +50,10 @@ type ChessProfile = {
 
 async function fetchProfile(): Promise<ChessProfile | null> {
   try {
-    const res = await fetch(API, { headers: HEADERS, next: { revalidate: 3600 } });
+    const res = await fetch(API, {
+      headers: HEADERS,
+      next: { revalidate: 1000 },
+    });
     if (!res.ok) return null;
     return res.json();
   } catch {
@@ -60,7 +63,10 @@ async function fetchProfile(): Promise<ChessProfile | null> {
 
 async function fetchStats(): Promise<ChessStats | null> {
   try {
-    const res = await fetch(`${API}/stats`, { headers: HEADERS, next: { revalidate: 3600 } });
+    const res = await fetch(`${API}/stats`, {
+      headers: HEADERS,
+      next: { revalidate: 1000 },
+    });
     if (!res.ok) return null;
     return res.json();
   } catch {
@@ -100,19 +106,24 @@ export default async function ChessPage() {
       <Header />
       <div className="container mx-auto px-4 py-10 md:py-16">
         <div className="max-w-3xl mx-auto">
-
           {!profile ? (
             <div className="bg-white border border-slate-200 rounded-xl p-12 text-center">
-              <p className="text-slate-600 font-medium mb-1">Could not reach Chess.com</p>
-              <p className="text-slate-400 text-sm mb-5">The API may be temporarily unavailable.</p>
-              <Link href={PROFILE_URL} target="_blank"
-                className="text-sm font-semibold text-emerald-600 hover:underline">
+              <p className="text-slate-600 font-medium mb-1">
+                Could not reach Chess.com
+              </p>
+              <p className="text-slate-400 text-sm mb-5">
+                The API may be temporarily unavailable.
+              </p>
+              <Link
+                href={PROFILE_URL}
+                target="_blank"
+                className="text-sm font-semibold text-emerald-600 hover:underline"
+              >
                 View profile on Chess.com →
               </Link>
             </div>
           ) : (
             <div className="flex flex-col gap-5">
-
               {/* ── Profile card ── */}
               <div className="bg-white border border-slate-200 rounded-xl p-6">
                 <div className="flex items-start gap-4">
@@ -141,13 +152,17 @@ export default async function ChessPage() {
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-slate-400 mb-3">@{profile.username}</p>
+                    <p className="text-sm text-slate-400 mb-3">
+                      @{profile.username}
+                    </p>
 
                     <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-slate-500 mb-4">
                       {countryCode(profile.country) && (
                         <span>{countryCode(profile.country)}</span>
                       )}
-                      <span>{profile.followers.toLocaleString()} followers</span>
+                      <span>
+                        {profile.followers.toLocaleString()} followers
+                      </span>
                       <span>Joined {formatDate(profile.joined)}</span>
                       <span>Last seen {formatDate(profile.last_online)}</span>
                     </div>
@@ -177,7 +192,10 @@ export default async function ChessPage() {
                       const drawPct = total > 0 ? (draw / total) * 100 : 0;
                       const lossPct = total > 0 ? (loss / total) * 100 : 0;
                       return (
-                        <div key={key} className="bg-white border border-slate-200 rounded-xl p-5">
+                        <div
+                          key={key}
+                          className="bg-white border border-slate-200 rounded-xl p-5"
+                        >
                           <div className="flex items-center justify-between mb-3">
                             <div>
                               <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
@@ -190,16 +208,28 @@ export default async function ChessPage() {
                                 {data.last.rating}
                               </p>
                               <p className="text-xs text-slate-400">
-                                Best: <span className="font-semibold text-slate-600">{data.best.rating}</span>
+                                Best:{" "}
+                                <span className="font-semibold text-slate-600">
+                                  {data.best.rating}
+                                </span>
                               </p>
                             </div>
                           </div>
 
                           {/* W/D/L stacked bar */}
                           <div className="h-1.5 rounded-full overflow-hidden flex mb-2">
-                            <div className="bg-emerald-500 h-full" style={{ width: `${winPct}%` }} />
-                            <div className="bg-slate-300 h-full" style={{ width: `${drawPct}%` }} />
-                            <div className="bg-red-400 h-full" style={{ width: `${lossPct}%` }} />
+                            <div
+                              className="bg-emerald-500 h-full"
+                              style={{ width: `${winPct}%` }}
+                            />
+                            <div
+                              className="bg-slate-300 h-full"
+                              style={{ width: `${drawPct}%` }}
+                            />
+                            <div
+                              className="bg-red-400 h-full"
+                              style={{ width: `${lossPct}%` }}
+                            />
                           </div>
                           <div className="flex gap-3 text-xs text-slate-500">
                             <span className="flex items-center gap-1">
@@ -214,7 +244,9 @@ export default async function ChessPage() {
                               <span className="w-2 h-2 rounded-full bg-red-400 inline-block" />
                               {loss}L
                             </span>
-                            <span className="ml-auto text-slate-400">{total} games</span>
+                            <span className="ml-auto text-slate-400">
+                              {total} games
+                            </span>
                           </div>
                         </div>
                       );
@@ -246,7 +278,8 @@ export default async function ChessPage() {
                             {stats.puzzle_rush.best.score}
                           </p>
                           <p className="text-xs text-slate-400">
-                            Best score · {stats.puzzle_rush.best.total_attempts} attempts
+                            Best score · {stats.puzzle_rush.best.total_attempts}{" "}
+                            attempts
                           </p>
                         </div>
                       )}
@@ -254,7 +287,6 @@ export default async function ChessPage() {
                   )}
                 </>
               )}
-
             </div>
           )}
         </div>

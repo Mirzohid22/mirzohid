@@ -4,42 +4,77 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const navLinks = [
-  { href: "/projects", label: "Projects" },
-  { href: "/skills", label: "Skills" },
-  { href: "/experience", label: "Experience" },
-  { href: "/education", label: "Education" },
-  { href: "/leetcode", label: "LeetCode" },
-  { href: "/chess", label: "Chess" },
-  { href: "/contact", label: "Contact" },
+const navGroups = [
+  {
+    label: "Portfolio",
+    links: [
+      { href: "/projects", label: "Projects" },
+      { href: "/skills", label: "Skills" },
+      { href: "/experience", label: "Experience" },
+      { href: "/education", label: "Education" },
+    ],
+  },
+  {
+    label: "Personal",
+    links: [
+      { href: "/playground", label: "Playground" },
+      { href: "/leetcode", label: "LeetCode" },
+      { href: "/chess", label: "Chess" },
+    ],
+  },
+  {
+    label: "Contact",
+    links: [
+      { href: "/contact", label: "Contact" },
+    ],
+  },
 ];
+
+const allLinks = navGroups.flatMap((g) => g.links);
 
 const Header: React.FC = () => {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
 
+  const linkCls = (href: string) =>
+    `px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+      pathname === href
+        ? "bg-indigo-50 text-indigo-600"
+        : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+    }`;
+
+  const mobileLinkCls = (href: string) =>
+    `block px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
+      pathname === href
+        ? "text-indigo-600 bg-indigo-50"
+        : "text-slate-700 hover:text-slate-900 hover:bg-slate-50"
+    }`;
+
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm border-b border-slate-200">
       <nav className="container mx-auto flex items-center justify-between px-4 h-16">
-        <Link href="/" onClick={close} className="font-bold text-xl text-slate-900 tracking-tight">
+        <Link
+          href="/"
+          onClick={close}
+          className="font-bold text-xl text-slate-900 tracking-tight shrink-0"
+        >
           MS<span className="text-indigo-500">.</span>
         </Link>
 
-        {/* Desktop nav */}
+        {/* Desktop nav — groups separated by dividers */}
         <div className="hidden md:flex items-center gap-1">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                pathname === link.href
-                  ? "bg-indigo-50 text-indigo-600"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
-              }`}
-            >
-              {link.label}
-            </Link>
+          {navGroups.map((group, gi) => (
+            <React.Fragment key={group.label}>
+              {gi > 0 && (
+                <span className="w-px h-4 bg-slate-200 mx-1 shrink-0" aria-hidden />
+              )}
+              {group.links.map((link) => (
+                <Link key={link.href} href={link.href} className={linkCls(link.href)}>
+                  {link.label}
+                </Link>
+              ))}
+            </React.Fragment>
           ))}
         </div>
 
@@ -65,22 +100,25 @@ const Header: React.FC = () => {
         </button>
       </nav>
 
-      {/* Mobile dropdown — absolute so it overlays content instead of pushing it down */}
+      {/* Mobile dropdown */}
       {open && (
-        <div className="md:hidden absolute top-full left-0 right-0 border-t border-slate-100 bg-white/95 backdrop-blur-sm shadow-lg px-4 pb-3">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={close}
-              className={`block px-3 py-3 rounded-md text-sm font-medium transition-colors ${
-                pathname === link.href
-                  ? "text-indigo-600 bg-indigo-50"
-                  : "text-slate-700 hover:text-slate-900 hover:bg-slate-50"
-              }`}
-            >
-              {link.label}
-            </Link>
+        <div className="md:hidden absolute top-full left-0 right-0 border-t border-slate-100 bg-white/95 backdrop-blur-sm shadow-lg px-4 pb-4">
+          {navGroups.map((group, gi) => (
+            <div key={group.label} className={gi > 0 ? "mt-3 pt-3 border-t border-slate-100" : "mt-1"}>
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-400 px-3 mb-1">
+                {group.label}
+              </p>
+              {group.links.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={close}
+                  className={mobileLinkCls(link.href)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
           ))}
         </div>
       )}

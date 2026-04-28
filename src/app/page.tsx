@@ -6,7 +6,13 @@ import mirzohid from "../../public/mirzohid.jpg";
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <main className="relative min-h-screen overflow-hidden">
+      {/* Ambient gradient blobs */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[480px] w-[700px] rounded-full bg-gradient-to-b from-indigo-100/70 to-transparent blur-3xl" />
+        <div className="absolute bottom-0 right-0 h-[400px] w-[500px] rounded-full bg-gradient-to-tl from-violet-100/50 to-transparent blur-3xl" />
+        <div className="absolute bottom-0 left-0 h-[300px] w-[400px] rounded-full bg-gradient-to-tr from-slate-200/60 to-transparent blur-3xl" />
+      </div>
       <Header />
       <section className="container mx-auto px-4 pt-12 pb-16 sm:pt-24 sm:pb-20 flex flex-col items-center text-center">
         <div className="relative mb-6">

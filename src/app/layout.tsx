@@ -70,7 +70,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-slate-50 text-slate-900`}>
+      <body className={`${inter.className} min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/50 to-violet-50/60 text-slate-900`}>
         {children}
       </body>
     </html>

@@ -389,6 +389,52 @@ export default function SudokuGame() {
   const livesLeft = MAX_MISTAKES - mistakes;
   const inactive = solved || gameOver;
 
+  // ── shared grid JSX ─────────────────────────────────────────────────────────
+  const gridJSX = (
+    <div className="w-full border-2 border-slate-400 rounded-xl overflow-hidden grid grid-cols-9">
+      {Array.from({ length: 9 }, (_, r) =>
+        Array.from({ length: 9 }, (_, c) => {
+          const cellNotes = notes[r][c];
+          const hasValue  = userBoard[r][c] !== 0;
+          const hasNotes  = !hasValue && cellNotes.size > 0;
+          const completionDelay = completionMap.get(`${r}-${c}`);
+          return (
+            <div
+              key={`${r}-${c}`}
+              className={`${cellClass(r, c)}${completionDelay !== undefined ? " sdc" : ""}`}
+              style={completionDelay !== undefined ? { animationDelay: `${completionDelay}ms` } : undefined}
+              onClick={() => !inactive && setSelected([r, c])}
+            >
+              {hasValue ? (
+                userBoard[r][c]
+              ) : hasNotes ? (
+                <div className="grid grid-cols-3 w-full h-full p-[1px]">
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => {
+                    const active = cellNotes.has(n);
+                    return (
+                      <span
+                        key={n}
+                        className={`flex items-center justify-center text-[7px] sm:text-[9px] leading-none font-medium transition-colors ${
+                          active && highlightNote === n
+                            ? "text-indigo-500 font-bold"
+                            : active
+                            ? "text-slate-400"
+                            : "text-transparent"
+                        }`}
+                      >
+                        {n}
+                      </span>
+                    );
+                  })}
+                </div>
+              ) : null}
+            </div>
+          );
+        })
+      )}
+    </div>
+  );
+
   return (
     <>
     <style>{`
@@ -401,215 +447,178 @@ export default function SudokuGame() {
       }
       .sdc { animation: sdc 0.65s ease-in-out both; }
     `}</style>
-    <div className="container mx-auto px-4 py-8 md:py-12">
-      <div className="max-w-md mx-auto">
 
-        {/* Header */}
-        <div className="mb-6">
-          <Link
-            href="/playground"
-            className="text-sm text-slate-500 hover:text-slate-700 transition-colors mb-3 inline-block"
-          >
-            ← Back to Playground
-          </Link>
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-1">Sudoku</h1>
-              <p className="text-slate-500 text-sm">Fill every row, column, and 3×3 box with digits 1–9.</p>
-            </div>
-            <div className="text-right shrink-0">
-              <div className="font-mono text-xl font-bold text-slate-700 tabular-nums">
-                {formatTime(timer)}
-              </div>
-              {/* Lives */}
-              <div className="flex items-center justify-end gap-1 mt-1.5" title={`${livesLeft} mistakes remaining`}>
-                {Array.from({ length: MAX_MISTAKES }, (_, i) => (
-                  <span
-                    key={i}
-                    className={`w-2.5 h-2.5 rounded-full transition-colors duration-300 ${
-                      i < livesLeft ? "bg-red-400" : "bg-slate-200"
-                    }`}
-                  />
-                ))}
-              </div>
-              {solved && <div className="text-xs font-semibold text-emerald-600 mt-0.5">Solved!</div>}
-            </div>
-          </div>
-        </div>
+    <div className="px-4 py-4 md:py-6">
+      <div className="max-w-4xl mx-auto">
 
-        {/* Difficulty + New Game */}
-        <div className="flex flex-wrap items-center gap-2 mb-4">
-          {DIFFICULTIES.map((d) => (
-            <button
-              key={d}
-              onClick={() => handleDifficulty(d)}
-              className={`capitalize px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                difficulty === d
-                  ? "bg-indigo-600 text-white"
-                  : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
-              }`}
-            >
-              {d}
-            </button>
-          ))}
-          <button
-            onClick={() => startGame(difficulty)}
-            className="ml-auto px-3 py-1.5 rounded-lg text-sm font-medium bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors"
-          >
-            New Game
-          </button>
-        </div>
-
-        {/* Grid */}
-        <div className="w-full border-2 border-slate-400 rounded-xl overflow-hidden grid grid-cols-9 mb-4">
-          {Array.from({ length: 9 }, (_, r) =>
-            Array.from({ length: 9 }, (_, c) => {
-              const cellNotes = notes[r][c];
-              const hasValue  = userBoard[r][c] !== 0;
-              const hasNotes  = !hasValue && cellNotes.size > 0;
-              const completionDelay = completionMap.get(`${r}-${c}`);
-              return (
-                <div
-                  key={`${r}-${c}`}
-                  className={`${cellClass(r, c)}${completionDelay !== undefined ? " sdc" : ""}`}
-                  style={completionDelay !== undefined ? { animationDelay: `${completionDelay}ms` } : undefined}
-                  onClick={() => !inactive && setSelected([r, c])}
-                >
-                  {hasValue ? (
-                    userBoard[r][c]
-                  ) : hasNotes ? (
-                    <div className="grid grid-cols-3 w-full h-full p-[1px]">
-                      {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => {
-                        const active = cellNotes.has(n);
-                        return (
-                          <span
-                            key={n}
-                            className={`flex items-center justify-center text-[7px] sm:text-[9px] leading-none font-medium transition-colors ${
-                              active && highlightNote === n
-                                ? "text-indigo-500 font-bold"
-                                : active
-                                ? "text-slate-400"
-                                : "text-transparent"
-                            }`}
-                          >
-                            {n}
-                          </span>
-                        );
-                      })}
-                    </div>
-                  ) : null}
-                </div>
-              );
-            })
-          )}
-        </div>
-
-        {/* Mode toggle */}
-        <div className="flex gap-2 mb-2">
-          <button
-            onClick={() => setPencilMode(false)}
-            disabled={inactive}
-            className={`flex-1 py-2 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-1.5 disabled:opacity-40 ${
-              !pencilMode
-                ? "bg-indigo-600 text-white shadow-sm"
-                : "bg-white border border-slate-200 text-slate-500 hover:bg-slate-50"
-            }`}
-          >
-            <PenIcon className="w-3.5 h-3.5" />
-            Normal
-          </button>
-          <button
-            onClick={() => setPencilMode(true)}
-            disabled={inactive}
-            title="Pencil mode — jot candidate digits (P)"
-            className={`flex-1 py-2 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-1.5 disabled:opacity-40 ${
-              pencilMode
-                ? "bg-amber-500 text-white shadow-sm"
-                : "bg-white border border-slate-200 text-slate-500 hover:bg-slate-50"
-            }`}
-          >
-            <PencilIcon className="w-3.5 h-3.5" />
-            Notes
-          </button>
-        </div>
-
-        {/* Number pad */}
-        <div className="grid grid-cols-5 gap-2 mb-4">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
-            <button
-              key={n}
-              onClick={() => inputNum(n)}
-              disabled={inactive || (!pencilMode && counts[n] >= 9)}
-              className={`relative aspect-square border rounded-xl text-lg font-semibold transition-colors
-                disabled:opacity-30 disabled:cursor-not-allowed ${
-                pencilMode
-                  ? "bg-amber-50 border-amber-200 text-amber-700 hover:bg-amber-100 hover:border-amber-300"
-                  : "bg-white border-slate-200 text-slate-700 hover:bg-indigo-50 hover:border-indigo-300 hover:text-indigo-700"
-              }`}
-            >
-              {n}
-              {!pencilMode && counts[n] > 0 && counts[n] < 9 && (
-                <span className="absolute bottom-1 right-1 text-[9px] text-slate-400 leading-none">
-                  {9 - counts[n]}
-                </span>
-              )}
-            </button>
-          ))}
-          <button
-            onClick={eraseCell}
-            disabled={inactive}
-            className="aspect-square bg-white border border-slate-200 rounded-xl text-base font-semibold text-slate-400
-              hover:bg-red-50 hover:border-red-200 hover:text-red-500 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-            title="Erase (Backspace)"
-          >
-            ✕
-          </button>
-        </div>
-
-        {/* Reveal */}
-        <button
-          onClick={handleReveal}
-          disabled={inactive}
-          className="w-full py-2 rounded-xl text-sm font-semibold bg-white border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-40 transition-colors"
+        {/* Back link */}
+        <Link
+          href="/playground"
+          className="text-sm text-slate-500 hover:text-slate-700 transition-colors mb-3 inline-block"
         >
-          Reveal solution
-        </button>
+          ← Back to Playground
+        </Link>
 
-        {/* Game-over banner */}
-        {gameOver && (
-          <div className="mt-4 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-center">
-            <p className="text-red-700 font-semibold text-sm">3 mistakes — Game Over!</p>
-            <button
-              onClick={() => startGame(difficulty)}
-              className="mt-1.5 text-sm text-red-600 underline hover:text-red-800 transition-colors"
-            >
-              Try again →
-            </button>
+        {/* Header: title + timer + lives */}
+        <div className="flex items-center justify-between gap-4 mb-3">
+          <div>
+            <h1 className="text-xl md:text-2xl font-bold text-slate-900 leading-tight">Sudoku</h1>
+            <p className="text-slate-500 text-xs mt-0.5">Fill every row, column &amp; 3×3 box with 1–9.</p>
           </div>
-        )}
+          <div className="text-right shrink-0">
+            <div className="font-mono text-xl font-bold text-slate-700 tabular-nums">{formatTime(timer)}</div>
+            <div className="flex items-center justify-end gap-1 mt-1" title={`${livesLeft} of ${MAX_MISTAKES} lives remaining`}>
+              {Array.from({ length: MAX_MISTAKES }, (_, i) => (
+                <span
+                  key={i}
+                  className={`w-2.5 h-2.5 rounded-full transition-colors duration-300 ${
+                    i < livesLeft ? "bg-red-400" : "bg-slate-200"
+                  }`}
+                />
+              ))}
+            </div>
+            {solved && <div className="text-xs font-semibold text-emerald-600 mt-0.5">Solved!</div>}
+          </div>
+        </div>
 
-        {/* Solved banner */}
-        {solved && !gameOver && (
-          <div className="mt-4 bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3 text-center">
-            <p className="text-emerald-700 font-semibold text-sm">
-              Solved in {formatTime(timer)}!
+        {/* ── Two-column layout on lg+, single column on mobile ────────────── */}
+        <div className="flex flex-col lg:flex-row lg:items-start lg:gap-6">
+
+          {/* LEFT column: difficulty row + grid */}
+          <div className="w-full lg:w-[420px] lg:shrink-0">
+            <div className="flex flex-wrap items-center gap-2 mb-3">
+              {DIFFICULTIES.map((d) => (
+                <button
+                  key={d}
+                  onClick={() => handleDifficulty(d)}
+                  className={`capitalize px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    difficulty === d
+                      ? "bg-indigo-600 text-white"
+                      : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
+                  }`}
+                >
+                  {d}
+                </button>
+              ))}
+              <button
+                onClick={() => startGame(difficulty)}
+                className="ml-auto px-3 py-1.5 rounded-lg text-sm font-medium bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors"
+              >
+                New Game
+              </button>
+            </div>
+
+            {gridJSX}
+          </div>
+
+          {/* RIGHT column: mode, numpad, reveal, banners, hint */}
+          <div className="w-full lg:flex-1 flex flex-col gap-2 mt-3 lg:mt-0 lg:pt-[2.375rem]">
+
+            {/* Mode toggle */}
+            <div className="flex gap-2">
+              <button
+                onClick={() => setPencilMode(false)}
+                disabled={inactive}
+                className={`flex-1 py-2 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-1.5 disabled:opacity-40 ${
+                  !pencilMode
+                    ? "bg-indigo-600 text-white shadow-sm"
+                    : "bg-white border border-slate-200 text-slate-500 hover:bg-slate-50"
+                }`}
+              >
+                <PenIcon className="w-3.5 h-3.5" />
+                Normal
+              </button>
+              <button
+                onClick={() => setPencilMode(true)}
+                disabled={inactive}
+                title="Pencil mode — jot candidate digits (P)"
+                className={`flex-1 py-2 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-1.5 disabled:opacity-40 ${
+                  pencilMode
+                    ? "bg-amber-500 text-white shadow-sm"
+                    : "bg-white border border-slate-200 text-slate-500 hover:bg-slate-50"
+                }`}
+              >
+                <PencilIcon className="w-3.5 h-3.5" />
+                Notes
+              </button>
+            </div>
+
+            {/* Number pad */}
+            <div className="grid grid-cols-5 gap-2">
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
+                <button
+                  key={n}
+                  onClick={() => inputNum(n)}
+                  disabled={inactive || (!pencilMode && counts[n] >= 9)}
+                  className={`relative aspect-square border rounded-xl text-base font-semibold transition-colors
+                    disabled:opacity-30 disabled:cursor-not-allowed ${
+                    pencilMode
+                      ? "bg-amber-50 border-amber-200 text-amber-700 hover:bg-amber-100 hover:border-amber-300"
+                      : "bg-white border-slate-200 text-slate-700 hover:bg-indigo-50 hover:border-indigo-300 hover:text-indigo-700"
+                  }`}
+                >
+                  {n}
+                  {!pencilMode && counts[n] > 0 && counts[n] < 9 && (
+                    <span className="absolute bottom-0.5 right-1 text-[9px] text-slate-400 leading-none">
+                      {9 - counts[n]}
+                    </span>
+                  )}
+                </button>
+              ))}
+              <button
+                onClick={eraseCell}
+                disabled={inactive}
+                className="aspect-square bg-white border border-slate-200 rounded-xl text-base font-semibold text-slate-400
+                  hover:bg-red-50 hover:border-red-200 hover:text-red-500 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                title="Erase (Backspace)"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Reveal */}
+            <button
+              onClick={handleReveal}
+              disabled={inactive}
+              className="w-full py-2 rounded-xl text-sm font-semibold bg-white border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-40 transition-colors"
+            >
+              Reveal solution
+            </button>
+
+            {/* Game-over banner */}
+            {gameOver && (
+              <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-center">
+                <p className="text-red-700 font-semibold text-sm">3 mistakes — Game Over!</p>
+                <button
+                  onClick={() => startGame(difficulty)}
+                  className="mt-1 text-sm text-red-600 underline hover:text-red-800 transition-colors"
+                >
+                  Try again →
+                </button>
+              </div>
+            )}
+
+            {/* Solved banner */}
+            {solved && !gameOver && (
+              <div className="bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3 text-center">
+                <p className="text-emerald-700 font-semibold text-sm">Solved in {formatTime(timer)}!</p>
+                <button
+                  onClick={() => startGame(difficulty)}
+                  className="mt-1 text-sm text-emerald-600 underline hover:text-emerald-800 transition-colors"
+                >
+                  Play again →
+                </button>
+              </div>
+            )}
+
+            <p className="text-xs text-slate-400 text-center mt-auto pt-2">
+              Click a cell then type, or use the pad.
+              <br />
+              Arrow keys navigate · <kbd className="font-mono bg-slate-100 px-1 rounded text-slate-500">P</kbd> toggles Notes · 3 mistakes = game over.
             </p>
-            <button
-              onClick={() => startGame(difficulty)}
-              className="mt-1.5 text-sm text-emerald-600 underline hover:text-emerald-800 transition-colors"
-            >
-              Play again →
-            </button>
+
           </div>
-        )}
-
-        <p className="mt-4 text-xs text-slate-400 text-center">
-          Click a cell then type, or use the pad. Arrow keys to navigate.
-          <br />
-          Press <kbd className="font-mono bg-slate-100 px-1 rounded text-slate-500">P</kbd> to toggle Notes mode.
-          Wrong digits count as a mistake — 3 and it&apos;s over.
-        </p>
-
+        </div>
       </div>
     </div>
     </>

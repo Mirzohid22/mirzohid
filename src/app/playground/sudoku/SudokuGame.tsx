@@ -94,6 +94,44 @@ function formatTime(s: number): string {
   return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
 }
 
+// Returns a map of "r-c" → animationDelay(ms) for every cell in a newly completed group.
+// Delay starts at BASE so the gold cascade begins after the green flash ends.
+const COMPLETION_BASE = 480;
+const COMPLETION_STEP = 55;
+
+function detectCompletions(board: Board, sol: Board, r: number, c: number): Map<string, number> {
+  const map = new Map<string, number>();
+  const set = (key: string, delay: number) => {
+    if (!map.has(key) || map.get(key)! > delay) map.set(key, delay);
+  };
+
+  const full = (vals: number[], ref: number[]) =>
+    vals.every((v, i) => v !== 0 && v === ref[i]);
+
+  if (full(board[r], sol[r])) {
+    for (let col = 0; col < 9; col++)
+      set(`${r}-${col}`, COMPLETION_BASE + col * COMPLETION_STEP);
+  }
+
+  if (full(board.map((row) => row[c]), sol.map((row) => row[c]))) {
+    for (let row = 0; row < 9; row++)
+      set(`${row}-${c}`, COMPLETION_BASE + row * COMPLETION_STEP);
+  }
+
+  const br = Math.floor(r / 3) * 3;
+  const bc = Math.floor(c / 3) * 3;
+  const boxVals = [0,1,2].flatMap((dr) => [0,1,2].map((dc) => board[br+dr][bc+dc]));
+  const boxRef  = [0,1,2].flatMap((dr) => [0,1,2].map((dc) => sol[br+dr][bc+dc]));
+  if (full(boxVals, boxRef)) {
+    let seq = 0;
+    for (let dr = 0; dr < 3; dr++)
+      for (let dc = 0; dc < 3; dc++)
+        set(`${br+dr}-${bc+dc}`, COMPLETION_BASE + seq++ * COMPLETION_STEP);
+  }
+
+  return map;
+}
+
 // ─── Icons ────────────────────────────────────────────────────────────────────
 
 function PenIcon({ className }: { className?: string }) {
@@ -140,6 +178,9 @@ export default function SudokuGame() {
   // cells in the flash sweep; key = "r-c"
   const [flashSet, setFlashSet] = useState<Set<string>>(new Set());
   const flashTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // completion cascade: cell key → animation delay (ms)
+  const [completionMap, setCompletionMap] = useState<Map<string, number>>(new Map());
+  const completionTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const triggerFlash = useCallback((r: number, c: number) => {
     if (flashTimer.current) clearTimeout(flashTimer.current);
@@ -152,8 +193,20 @@ export default function SudokuGame() {
     flashTimer.current = setTimeout(() => setFlashSet(new Set()), 450);
   }, []);
 
+  const triggerCompletion = useCallback((map: Map<string, number>) => {
+    if (map.size === 0) return;
+    if (completionTimer.current) clearTimeout(completionTimer.current);
+    setCompletionMap(map);
+    const maxDelay = Math.max(...Array.from(map.values()));
+    completionTimer.current = setTimeout(
+      () => setCompletionMap(new Map()),
+      maxDelay + 700
+    );
+  }, []);
+
   const startGame = useCallback((diff: Difficulty) => {
     if (flashTimer.current) clearTimeout(flashTimer.current);
+    if (completionTimer.current) clearTimeout(completionTimer.current);
     const { puzzle: p, solution: s } = createPuzzle(diff);
     setPuzzle(p);
     setSolution(s);
@@ -167,11 +220,15 @@ export default function SudokuGame() {
     setRunning(true);
     setPencilMode(false);
     setFlashSet(new Set());
+    setCompletionMap(new Map());
   }, []);
 
   useEffect(() => {
     startGame("medium");
-    return () => { if (flashTimer.current) clearTimeout(flashTimer.current); };
+    return () => {
+      if (flashTimer.current) clearTimeout(flashTimer.current);
+      if (completionTimer.current) clearTimeout(completionTimer.current);
+    };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -217,8 +274,9 @@ export default function SudokuGame() {
         return;
       }
 
-      // ── Correct digit → sweep row & col, clean notes ─────────────────────
+      // ── Correct digit → sweep row & col, clean notes, celebrate groups ──
       triggerFlash(r, c);
+      triggerCompletion(detectCompletions(next, solution, r, c));
 
       const nextNotes = cloneNotes(notes);
       nextNotes[r][c].clear();
@@ -240,7 +298,7 @@ export default function SudokuGame() {
         setRunning(false);
       }
     },
-    [selected, solved, gameOver, puzzle, userBoard, solution, pencilMode, notes, mistakes, triggerFlash]
+    [selected, solved, gameOver, puzzle, userBoard, solution, pencilMode, notes, mistakes, triggerFlash, triggerCompletion]
   );
 
   const eraseCell = useCallback(() => {
@@ -332,6 +390,17 @@ export default function SudokuGame() {
   const inactive = solved || gameOver;
 
   return (
+    <>
+    <style>{`
+      @keyframes sdc {
+        0%   { background-color: transparent; }
+        20%  { background-color: #fef08a; }
+        55%  { background-color: #fde047; }
+        80%  { background-color: #fef08a; }
+        100% { background-color: transparent; }
+      }
+      .sdc { animation: sdc 0.65s ease-in-out both; }
+    `}</style>
     <div className="container mx-auto px-4 py-8 md:py-12">
       <div className="max-w-md mx-auto">
 
@@ -398,10 +467,12 @@ export default function SudokuGame() {
               const cellNotes = notes[r][c];
               const hasValue  = userBoard[r][c] !== 0;
               const hasNotes  = !hasValue && cellNotes.size > 0;
+              const completionDelay = completionMap.get(`${r}-${c}`);
               return (
                 <div
                   key={`${r}-${c}`}
-                  className={cellClass(r, c)}
+                  className={`${cellClass(r, c)}${completionDelay !== undefined ? " sdc" : ""}`}
+                  style={completionDelay !== undefined ? { animationDelay: `${completionDelay}ms` } : undefined}
                   onClick={() => !inactive && setSelected([r, c])}
                 >
                   {hasValue ? (
@@ -541,5 +612,6 @@ export default function SudokuGame() {
 
       </div>
     </div>
+    </>
   );
 }

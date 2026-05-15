@@ -34,23 +34,21 @@ export default function Home() {
           Mirzohid Salimov
         </h1>
         <p className="text-slate-500 text-lg font-medium mb-6">
-          Frontend Developer · Tashkent, Uzbekistan
+          Software Engineer · Tashkent, Uzbekistan
         </p>
 
         <p className="max-w-lg text-slate-600 text-base leading-relaxed mb-10">
-          4+ years building production web apps — from B2B ERP systems to
-          freelance client projects. I specialise in the React.js ecosystem and
-          love turning complex requirements into clean, usable interfaces.
+          4+ years of experience designing and shipping production web applications — from B2B ERP and POS platforms to client projects and freelance work. Specialised in the React.js ecosystem (React, Next.js, TypeScript), I turn complex requirements into clean, maintainable interfaces.
         </p>
 
         <div className="flex flex-wrap gap-3 justify-center mb-10">
-          <Link
-            href="https://drive.google.com/file/d/1GuhvYUwReGxITLgG6sNyEHltFPZtGVXr/view?usp=sharing"
-            target="_blank"
+          <a
+            href="/Mirzohid_Salimov_CV.pdf"
+            download
             className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-semibold transition-colors"
           >
             Download CV
-          </Link>
+          </a>
           <Link
             href="/projects"
             className="px-5 py-2.5 bg-white hover:bg-slate-100 text-slate-800 border border-slate-200 rounded-lg text-sm font-semibold transition-colors"

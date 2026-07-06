@@ -13,7 +13,7 @@ const USERNAME = "device_22";
 const PROFILE_URL = `https://www.chess.com/member/${USERNAME}`;
 const API = `https://api.chess.com/pub/player/${USERNAME}`;
 const HEADERS = {
-  "User-Agent": "MirzohidPortfolio/1.0 (mirzohidsalimov22@gmail.com)",
+  "User-Agent": "MirzohidPortfolio/1.0 (mirzohid.swe@gmail.com)",
 };
 
 // ─── Types ────────────────────────────────────────────────────────────────────

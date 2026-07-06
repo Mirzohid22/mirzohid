@@ -45,7 +45,7 @@ type Contact = {
 );
 
 const contacts: Contact[] = [
-  { kind: "email", label: "Email", value: "mirzohidsalimov22@gmail.com", href: "mailto:mirzohidsalimov22@gmail.com" },
+  { kind: "email", label: "Email", value: "mirzohid.swe@gmail.com", href: "mailto:mirzohid.swe@gmail.com" },
   { kind: "image", label: "Telegram", value: "@mirzohidsalimov", href: "https://t.me/mirzohidsalimov", icon: telegram },
   { kind: "image", label: "GitHub", value: "github.com/Mirzohid22", href: "https://github.com/Mirzohid22", icon: github },
   { kind: "image", label: "LinkedIn", value: "linkedin.com/in/mirzohid-salimov", href: "https://www.linkedin.com/in/mirzohid-salimov/", icon: linkedin },

@@ -17,7 +17,7 @@ export const educationList: Education[] = [
     activities: [
       "Youth Union — VCE (Vice President of Community Engagement) Leader",
       "TUIT Zakovat Club Championship — 2× Champion",
-      "Sports: Chess, Ping-pong, Football",
+      "Sports: Chess, Ping-pong, Padel",
     ],
   },
 ]

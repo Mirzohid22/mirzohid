@@ -34,11 +34,11 @@ export default function Home() {
           Mirzohid Salimov
         </h1>
         <p className="text-slate-500 text-lg font-medium mb-6">
-          Software Engineer · Tashkent, Uzbekistan
+          Software Development Engineer · Tashkent, Uzbekistan
         </p>
 
         <p className="max-w-lg text-slate-600 text-base leading-relaxed mb-10">
-          4+ years of experience designing and shipping production web applications — from B2B ERP and POS platforms to client projects and freelance work. Specialised in the React.js ecosystem (React, Next.js, TypeScript), I turn complex requirements into clean, maintainable interfaces.
+          5+ years building web applications, from production ERP and POS systems to products I launch myself. I take apps from an empty repository to a live deployment — database, Node.js APIs, React UIs, Docker and Linux VPS — and use AI agents daily to ship faster.
         </p>
 
         <div className="flex flex-wrap gap-3 justify-center mb-10">

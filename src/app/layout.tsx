@@ -9,14 +9,15 @@ const SITE_URL = "https://mirzohid.dev"; // update to your actual domain when de
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Mirzohid Salimov — Frontend Developer",
+    default: "Mirzohid Salimov — Software Development Engineer",
     template: "%s · Mirzohid Salimov",
   },
   description:
-    "Frontend Developer from Tashkent, Uzbekistan with 4+ years of experience building B2B ERP systems and production web applications with React.js, Next.js, and TypeScript.",
+    "Software Development Engineer from Tashkent, Uzbekistan with 5+ years building production ERP systems and end-to-end web applications with React, Node.js, PostgreSQL and AI integrations.",
   keywords: [
     "Mirzohid Salimov",
-    "Frontend Developer",
+    "Software Development Engineer",
+    "Full-stack Developer",
     "React Developer",
     "Next.js Developer",
     "TypeScript",
@@ -32,9 +33,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: SITE_URL,
     siteName: "Mirzohid Salimov",
-    title: "Mirzohid Salimov — Frontend Developer",
+    title: "Mirzohid Salimov — Software Development Engineer",
     description:
-      "Frontend Developer from Tashkent, Uzbekistan with 4+ years of experience building B2B ERP systems and production web applications.",
+      "Software Development Engineer from Tashkent, Uzbekistan with 5+ years building production ERP systems and end-to-end web applications.",
     images: [
       {
         url: "/mirzohid.jpg",
@@ -46,9 +47,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary",
-    title: "Mirzohid Salimov — Frontend Developer",
+    title: "Mirzohid Salimov — Software Development Engineer",
     description:
-      "Frontend Developer from Tashkent, Uzbekistan. React · Next.js · TypeScript.",
+      "Software Development Engineer from Tashkent, Uzbekistan. React · Node.js · PostgreSQL · AI.",
     images: ["/mirzohid.jpg"],
   },
   robots: {

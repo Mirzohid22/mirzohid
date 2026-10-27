@@ -5,7 +5,7 @@ import { projects } from "./projects.data";
 export const metadata: Metadata = {
   title: "Projects",
   description:
-    "Web applications built by Mirzohid Salimov — B2B ERP systems, CMS platforms, and client sites using React, Node.js, and MongoDB.",
+    "Web applications built by Mirzohid Salimov — production ERP systems, AI features and self-hosted products built with React, Next.js, Node.js and PostgreSQL.",
 };
 
 export default function Projects() {

@@ -5,19 +5,27 @@ type SkillCategory = {
 
 export const skillCategories: SkillCategory[] = [
   {
+    category: 'Languages',
+    skills: ['JavaScript', 'TypeScript', 'SQL', 'HTML/CSS'],
+  },
+  {
     category: 'Frontend',
-    skills: ['React.js', 'Next.js', 'TypeScript', 'JavaScript', 'HTML/CSS', 'Tailwind CSS', 'Ant Design', 'Redux Toolkit'],
+    skills: ['React', 'Next.js', 'React Query', 'Redux Toolkit', 'react-hook-form', 'MUI', 'Ant Design', 'Tailwind CSS', 'Vite', 'Webpack', 'i18next'],
   },
   {
-    category: 'Backend',
-    skills: ['Node.js', 'Express.js', 'REST APIs'],
+    category: 'Backend & data',
+    skills: ['Node.js', 'Fastify', 'Express.js', 'REST APIs', 'PostgreSQL', 'Prisma', 'MongoDB'],
   },
   {
-    category: 'Databases',
-    skills: ['MongoDB', 'PostgreSQL', 'MySQL'],
+    category: 'AI',
+    skills: ['Claude API', 'Claude Code', 'Agentic orchestration', 'Subagents', 'MCP', 'Context engineering', 'LLM streaming (SSE)'],
   },
   {
-    category: 'Tools',
-    skills: ['Git', 'Vite', 'Figma', 'Docker'],
+    category: 'DevOps',
+    skills: ['Docker', 'nginx', 'Linux VPS', 'Cloudflare', 'GitLab CI/CD', 'Git'],
+  },
+  {
+    category: 'Quality',
+    skills: ['Jest', 'ESLint', 'Prettier', 'Code review', 'Feature-Sliced Design'],
   },
 ]

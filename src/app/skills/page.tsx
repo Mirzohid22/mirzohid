@@ -5,7 +5,7 @@ import { skillCategories } from "./skills.data";
 export const metadata: Metadata = {
   title: "Skills",
   description:
-    "Technical skills of Mirzohid Salimov — React, Next.js, TypeScript, Node.js, PostgreSQL, and more.",
+    "Technical skills of Mirzohid Salimov — React, Next.js, Node.js, PostgreSQL, Docker and AI engineering.",
 };
 
 const categoryStyle: Record<string, string> = {

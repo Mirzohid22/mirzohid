@@ -5,7 +5,7 @@ import { jobs } from "./experience.data";
 export const metadata: Metadata = {
   title: "Experience",
   description:
-    "Professional experience of Mirzohid Salimov — Frontend Developer at BM Electronics and 2+ years of freelance full-stack work.",
+    "Professional experience of Mirzohid Salimov — Software Developer at BM Electronics building production ERP and AI features, plus freelance full-stack work.",
 };
 
 export default function Experience() {
